@@ -10,7 +10,7 @@ const SearchBar = ({ collapse }) => {
     const [width, setWidth] = useState(window.innerWidth);
     const [isActive, setIsActive] = useState(false);
     const dispatch = useDispatch();
-    
+    const videoss=useSelector(state=>state.videos);
     const list=useSelector(state=>state.videos.videoList);
 
     const search = async (term, maxResults) => {
@@ -23,8 +23,8 @@ const SearchBar = ({ collapse }) => {
     };
 
     // useEffect(() => {
-    //     search("",12);
-    // });
+    //     search("",4);
+    // },[]);
 
     const handleResize = () => {
         setWidth(window.innerWidth);
@@ -50,11 +50,11 @@ const SearchBar = ({ collapse }) => {
     if (width < 650) {
         
         if (isActive) {
-            return(<div className="row col-12"><button className="btn" onClick={()=>onCollapse(false)}><i class="fa-solid fa-arrow-left"></i></button><div className="row bg-dark ml-4 pl-2 pr-0 mx-auto col-10 bg-white search"> <input className="my-auto" style={{ margin: "auto 0", outline: "none", border: "none", fontSize: "17px", width: "calc(100% - 80px)" }} placeholder="Search"></input> <button onClick={(e)=>onSubmit(e)} className="btn" style={{ width: "80px" }}> <i class="fa-solid fa-magnifying-glass"></i> </button></div></div>)
+            return(<form className="row col-12"><div className="btn" onClick={()=>onCollapse(false)}><i class="fa-solid fa-arrow-left"></i></div><div className="row bg-dark ml-4 pl-2 pr-0 mx-auto col-10 bg-white search"> <input className="my-auto" style={{ margin: "auto 0", outline: "none", border: "none", fontSize: "17px", width: "calc(100% - 70px)" }} placeholder="Search"></input> <button onClick={(e)=>onSubmit(e)} className="btn" type="submit" style={{ width: "70px" }}> <i class="fa-solid fa-magnifying-glass"></i> </button></div></form>)
         }
         else {
             
-            return (<div><button onClick={() => onCollapse(true)} className="btn" style={{ width: "80px" }}> <i class="fa-solid fa-magnifying-glass"></i> </button></div>);
+            return (<div><button onClick={() => onCollapse(true)} className="btn" style={{ width: "70px" }}> <i class="fa-solid fa-magnifying-glass"></i> </button></div>);
         }
     }
     else {
@@ -63,7 +63,7 @@ const SearchBar = ({ collapse }) => {
         if(isActive){
             onCollapse(false);    
         }
-        return (<div className="row ml-4 pl-2 pr-0 mx-auto col-4 col-lg-5 bg-white search"> <input className="my-auto" style={{ margin: "auto 0", outline: "none", border: "none", fontSize: "17px", width: "calc(100% - 80px)" }} placeholder="Search"></input> <button onClick={(e)=>onSubmit(e)} className="btn" style={{ width: "80px" }}> <i class="fa-solid fa-magnifying-glass"></i> </button></div>);
+        return (<form className="row ml-4 pl-2 pr-0 mx-auto col-4 col-lg-5 bg-white search"> <input className="my-auto" style={{ margin: "auto 0", outline: "none", border: "none", fontSize: "17px", width: "calc(100% - 70px)" }} placeholder="Search"></input> <button onClick={(e)=>onSubmit(e)} className="btn" type="submit" style={{ width: "70px" }}> <i class="fa-solid fa-magnifying-glass"></i> </button></form>);
     }
 }
 

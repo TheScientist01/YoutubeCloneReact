@@ -16,3 +16,16 @@ export const searchDeactive=()=>{
         type: "DEACTIVATE"
     });    
 }
+
+export const signIn = (user) => {
+    return {
+        type: 'SIGN_IN',
+        payload: {userId: user.getId(), mail: user.Tv, name:user.gZ, surname: user.tX, pp:user.gO}
+    };
+};
+
+export const signOut = () => {
+    return {
+        type: 'SIGN_OUT'
+    };
+};
