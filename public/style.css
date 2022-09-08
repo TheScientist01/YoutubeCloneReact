@@ -99,3 +99,12 @@ body{
     font-size: 14px;
     
 }
+
+.bg-black{
+    background: black!important;
+}
+
+.categories button{
+    border: 1px solid #d7d4d4;
+    background: #F2F2F2;
+}
