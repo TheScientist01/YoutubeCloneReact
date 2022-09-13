@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import VideoItem from "./VideoItem";
 
-const VideoList=()=>{
+const VideoList=({type})=>{
     const videos=[
         {
             "kind": "youtube#searchResult",
@@ -278,8 +278,11 @@ const VideoList=()=>{
                 }
             }
     ];
+
+    // let a=useSelector(state=>state.videos.videoList);
+    // console.log(a);
     const list=videos.map((video)=>{
-        return <VideoItem video={video} />
+        return <VideoItem video={video} type={type} />
     });
     console.log(videos);
     return <div className="row m-4 no-gutters">{list}</div>;

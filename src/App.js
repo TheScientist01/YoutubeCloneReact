@@ -1,38 +1,25 @@
-import SearchBar from "./components/SearchBar";
 import Header from "./components/Header";
 import VideoList from "./components/VideoList";
 import SideBar from "./components/SideBar";
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import Home from "./screens/Home";
+import Watch from "./screens/Watch";
 
 function App() {
+  const categories=["Autos & Vehicles","Film & Animation","Music","Pets & Animals","Sports","Short Movies","Travel & Events","Gaming","Videoblogging","People & Blogs","Comedy","Entertainment","News & Politics","Howto & Style","Education","Science & Technology","Nonprofits & Activism","Movies","Anime/Animation","Action/Adventure","Classics","Comedy","Documentary","Drama","Family","Foreign","Horror","Sci-Fi/Fantasy","Thriller","Shorts","Shows","Trailers"];
   return (
-    <div className="App" style={{display: "flex"}}>
-        <SideBar />
-        
-        <div style={{width:"100%"}}>
-          <Header />
-          <nav className="row mr-2 navbar navbar-white bg-white categories" style={{borderBottom: "2px solid #e5e5e5", justifyContent:"flex-start"}}>
-            <button className="btn btn-lg py-1 px-3 mx-3 text-white" style={{background:"black" ,fontSize: "17px", borderRadius:"500px"}}> All </button>
-            <button className="btn btn-lg py-1 px-3  mr-3 " style={{fontSize: "17px", borderRadius:"500px"}}> Music </button>
-            <button className="btn btn-lg py-1 px-3  mr-3 " style={{fontSize: "17px", borderRadius:"500px"}}> Music </button>
-            <button className="btn btn-lg py-1 px-3  mr-3 " style={{fontSize: "17px", borderRadius:"500px"}}> Music </button>
-            <button className="btn btn-lg py-1 px-3  mr-3 " style={{fontSize: "17px", borderRadius:"500px"}}> Music </button>
-            <button className="btn btn-lg py-1 px-3  mr-3 " style={{fontSize: "17px", borderRadius:"500px"}}> Music </button>
-            <button className="btn btn-lg py-1 px-3  mr-3 " style={{fontSize: "17px", borderRadius:"500px"}}> Music </button>
-            <button className="btn btn-lg py-1 px-3  mr-3 " style={{fontSize: "17px", borderRadius:"500px"}}> Music </button>
-            <button className="btn btn-lg py-1 px-3  mr-3 " style={{fontSize: "17px", borderRadius:"500px"}}> Music </button>
-            <button className="btn btn-lg py-1 px-3  mr-3 " style={{fontSize: "17px", borderRadius:"500px"}}> Music </button>
-            <button className="btn btn-lg py-1 px-3  mr-3 " style={{fontSize: "17px", borderRadius:"500px"}}> Music </button>
-            <button className="btn btn-lg py-1 px-3  mr-3 " style={{fontSize: "17px", borderRadius:"500px"}}> Music </button>
-            <button className="btn btn-lg py-1 px-3  mr-3 " style={{fontSize: "17px", borderRadius:"500px"}}> Music </button>
-            <button className="btn btn-lg py-1 px-3  mr-3 " style={{fontSize: "17px", borderRadius:"500px"}}> Music </button>
-            <button className="btn btn-lg py-1 px-3  mr-3 " style={{fontSize: "17px", borderRadius:"500px"}}> Music </button>
-            
-            
-          </nav>
-          <VideoList />
-        </div>
-          
-        
+    <div className="App">
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />}></Route>
+          <Route path="/watch" element={<Watch />}></Route>
+        </Routes>
+
+
+      </Router>
+
+
+
     </div>
   );
 }

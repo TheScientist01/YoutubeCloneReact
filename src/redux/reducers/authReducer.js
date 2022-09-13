@@ -26,7 +26,8 @@ export default (state = INITIAL_STATE, action) => {
                 userId: null,
                 mail: null,
                 name: null,
-                surname: null
+                surname: null,
+                pp:null
             };
         default:
             return state;

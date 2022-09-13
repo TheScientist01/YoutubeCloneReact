@@ -37,7 +37,7 @@ class AuthGoogle extends React.Component{
             // return <button onClick={()=>this.auth.signOut()} className="btn btn-primary mr-2" style={{fonSize: "small"}}>{this.props.user.name+" "+this.props.user.surname}</button>
             return(
             <div>
-            <div className="pp mr-3"><img width={"40px"} onClick={()=>{this.setState({isClicked:this.state.isClicked ? false : true}); this.auth.signOut()}} src={this.props.user.pp}></img></div>
+            <div className="pp mr-3"><img onClick={()=>{this.setState({isClicked:this.state.isClicked ? false : true}); this.auth.signOut()}} src={this.props.user.pp}></img></div>
             {/* <div className={`profile-info ${!this.state.isClicked ? "d-none" : ""}`}>
                 <ul className="list-group">
                     <div className="pp-big mx-auto mt-4"><img src={this.props .user.pp}></img></div>

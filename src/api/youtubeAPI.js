@@ -4,13 +4,13 @@ import axios from "axios";
 // const KEY='AIzaSyCwyt1FcKwW_IwVouO38gRCoFhIiqy7Pq8';
 const KEY='AIzaSyDme7jfUBKicAWjeQKPQJWtbSpfnqvRcqg';
 
-export const youtube=(maxResults)=> axios.create({
+export const youtube=(maxResults, related=null)=> axios.create({
     baseURL: 'https://www.googleapis.com/youtube/v3',
     params:{
-        part:  "",
+        part:  "snippet",
         key: KEY,
         maxResults: maxResults,
-        
+        relatedToVideoId: related
     }
 });
 

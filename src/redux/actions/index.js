@@ -18,6 +18,7 @@ export const searchDeactive=()=>{
 }
 
 export const signIn = (user) => {
+    // console.log(user);
     return {
         type: 'SIGN_IN',
         payload: {userId: user.getId(), mail: user.Tv, name:user.gZ, surname: user.tX, pp:user.gO}
