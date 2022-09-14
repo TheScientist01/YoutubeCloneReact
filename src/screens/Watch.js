@@ -1,16 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import { useSelector } from "react-redux";
+import { youtubeVideo } from "../api/youtubeAPI";
 
-const Watch = () => {
-
-    let params = (new URL(document.location)).searchParams;
-    const video = {
+class Watch extends React.Component{
+    
+    video = {
         "kind": "youtube#searchResult",
         "etag": "BGaZhCYJGXNrPoZVu9A6DSaoGPc",
         "id": {
-            "kind": "youtube#video",
-            "videoId": "rf6rNdKhx3E"
+            "kind": "youtube#this.video",
+            "this.videoId": "rf6rNdKhx3E"
         },
         "snippet": {
             "publishedAt": "2022-12-18T20:45:11Z",
@@ -39,145 +39,178 @@ const Watch = () => {
             "publishTime": "2022-12-18T20:45:11Z"
         }
     };
-
-    // return(
-    //     <div className="container">
-    //     <div className="ratio ratio-16x9">
-    //         <iframe className="col-12 mx-auto"  src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0" title="YouTube video" allowFullScreen></iframe>
-    //     </div>
-    //     </div>
-    // )
-
-    const monthNames = ["", "January", "February", "March", "April", "May", "June",
+    // document.title=this.video.snippet.title;
+    monthNames = ["", "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"];
-    const image = useSelector(state => state.auth.pp);
-
-    return (
-        <div>
-            <Header />
-            <div className="row no-gutters ml-5 mr-4 mt-4">
-                <div class="mx-auto mx-0 col-12 col-lg-8">
-                    <div className=" embed-responsive embed-responsive-16by9">
-                        <iframe
-
-                            id="embed"
-                            src={`https://www.youtube.com/embed/${params.get('v')}?&autoplay=0&mute=1&rel=0&modestbranding=1&autohide=1`}
-                            frameBorder="0"
-                            allowFullScreen>
-
-                        </iframe>
-
+    
+    state={snippet:{},contentDetails:{},statistics:{},date:''};
+    params = (new URL(document.location)).searchParams;
+    componentDidMount(){
+        document.title=this.video.snippet.title;
+        
+        
+        // const image = useSelector(state => state.auth.pp);
+        const getDetails = async ( part ) => {
+            const response = await youtubeVideo(part).get('/videos', {
+                params: {
+                    id: this.params.get('v')
+                }
+            }); 
+            const data=response.data.items[0];
+            // console.log(data);
+            this.setState({snippet:data.snippet,statistics:data.statistics, contentDetails:data.contentDetails, date: this.video.snippet.publishedAt.substring(8, 10)+" "+this.monthNames[this.video.snippet.publishedAt.substring(5, 7)].substring(0, 3).toLowerCase()+" "+this.video.snippet.publishedAt.substring(0, 4)});
+            document.title=data.snippet.title;
+            // console.log();
+            
+            // {this.video.snippet.publishedAt.substring(8, 10)} {this.monthNames[this.video.snippet.publishedAt.substring(5, 7)].substring(0, 3).toLowerCase()} {this.video.snippet.publishedAt.substring(0, 4)}
+        };
+        getDetails('snippet,statistics,contentDetails');
+    }
+    
+    render(){
+        return (
+            <div>
+                <Header />
+                <div style={{marginTop:"85px"}} className="col-12 col-xl-11 mx-auto row no-gutters">
+                    <div class="mx-auto mx-0 col-12 col-xl-8">
+                        <div className="col-12 mx-auto embed-responsive embed-responsive-16by9">
+                            <iframe
+    
+                                id="embed"
+                                src={`https://www.youtube.com/embed/${this.params.get('v')}?&autoplay=0&mute=1&rel=0&modestbranding=1&autohide=1`}
+                                frameBorder="0"
+                                allowFullScreen>
+    
+                            </iframe>
+    
+                        </div>
+                        <h1 style={{fontSize:"22px"}} className="mt-2">{this.state.snippet.title}</h1>
+                        <div className="col-12 p-0 row no-gutters">
+                            <div className="col-12 col-md-6" style={{ fontSize: "15px" }}>
+                                <div className="text-2">{this.state.statistics.viewCount} views {this.state.date} <span className="text-muted" >{this.video.snippet.description}</span></div>
+                            </div>
+                            <div className="col-12 col-md-5 offset-lg-1 ml-auto">
+                                <div className="row no-gutters justify-content-between like">
+                                    <div className="row">
+                                             <button className="btn circle"><i className="fa-regular fa-thumbs-up"></i><span className="my-auto mx-2">{this.state.statistics.likeCount}</span></button>
+                                        
+                                    </div>
+                                    <div className="row">
+                                        <button className="btn circle"><i className="fa-regular fa-thumbs-down"></i><span className="my-auto mx-2">Dislike</span></button>
+                                        
+                                    </div>
+                                    <div className="row">
+                                        <button className="btn circle"><i className="fa-solid fa-share"></i><span className="my-auto mx-2">Share</span></button>
+                                        
+                                    </div>
+    
+                                    <button className="btn"><i className="fa-solid fa-ellipsis"></i></button>
+                                </div>
+                            </div>
+                            <div className="col-12 col-md-6 row channel mt-2 ml-0 py-2">
+    
+                                    <div className="pp m-0 row">
+                                        <img src={this.image}></img>
+                                        <h6 className="ml-2">{this.video.snippet.channelTitle}</h6>
+                                    </div>
+    
+                                    <div className="ml-auto col-4">
+                                        <button className="btn col-12 mr-0">Subscribe</button>
+                                    </div>
+    
+                                </div>
+                                
+                                <div className="col-12 col-md-6 row channel my-2 mt-lg-2 mb-md-0 ml-0 ml-md-3 py-2">
+    
+                                    <div className="pp m-0 row">
+                                        <img src={this.image}></img>
+                                        <h6 className="ml-2">{this.video.snippet.channelTitle}</h6>
+                                    </div>
+    
+                                    <div className="ml-auto col-4">
+                                        <button className="btn col-12">Subscribe</button>
+                                    </div>
+    
+                                </div>
+                            
+    
+                        </div>
+    
                     </div>
-                    <h4 className="mt-2">{video.snippet.title}</h4>
-                    <div className="col-12 p-0 row no-gutters">
-                        <div className="col-11 col-lg-6" style={{ fontSize: "15px" }}>
-                            <div className="text-2">10.234 views {video.snippet.publishedAt.substring(8, 10)} {monthNames[video.snippet.publishedAt.substring(5, 7)].substring(0, 3).toLowerCase()} {video.snippet.publishedAt.substring(0, 4)} <span className="text-muted" >{video.snippet.description}</span></div>
-                            <div className="row channel mt-2 ml-0 py-2">
-
-                                <div className="pp m-0 row">
-                                    <img src={image}></img>
-                                    <h6 className="ml-2">{video.snippet.channelTitle}</h6>
-                                </div>
-
-                                <div className="ml-auto col-4">
-                                    <button className="btn col-12 mr-0">Subscribe</button>
-                                </div>
-
+    
+                    <div style={{fontFamily:"Roboto"}} className="col-12 col-xl-4 mx-lg-0 row">
+                        <div style={{display:"flex", }} className="col-12 mx-auto mx-auto mb-1">
+                            <div className="p-0 mb-2">
+                                <img width={"168px"} height={"94px"} src={this.video.snippet.thumbnails.medium.url}></img>
+    
+                            </div>
+                            <div className="details ml-2" >
+                                <div style={{ fontSize: "14px", fontWeight: "bold"}} className="text-2">{this.video.snippet.title}</div>
+                                <p className="text-muted my-0" style={{ fontSize: "13px" }}>{this.video.snippet.channelTitle}</p>
+                                <p className="text-muted" style={{ fontSize: "13px"}}>14k watch &middot; 2 days ago</p>
                             </div>
                         </div>
-                        <div className="col-12 col-lg-5 offset-lg-1 mx-auto">
-                            <div className="row justify-content-around like">
-                                <div className="row">
-                                    <button className="btn"><i className="fa-regular fa-thumbs-up"></i></button>
-                                    <p className="my-auto">35k</p>
-                                </div>
-                                <div className="row">
-                                    <button className="btn"><i className="fa-regular fa-thumbs-down"></i></button>
-                                    <p className="my-auto">Dislike</p>
-                                </div>
-                                <div className="row">
-                                    <button className="btn"><i className="fa-solid fa-share"></i></button>
-                                    <p className="my-auto">Share</p>
-                                </div>
-
-                                <button className="btn"><i className="fa-solid fa-ellipsis"></i></button>
+                        <div style={{display:"flex", }} className="col-12 mx-auto mx-auto mb-1">
+                            <div className="p-0 mb-2">
+                                <img width={"168px"} height={"94px"} src={this.video.snippet.thumbnails.medium.url}></img>
+    
                             </div>
-                            <div className="row channel mt-3 mr-auto p-2">
-
-                                <div className="pp m-0 row">
-                                    <img src={image}></img>
-                                    <h6 className="ml-2">{video.snippet.channelTitle}</h6>
-                                </div>
-
-                                <div className="ml-auto col-4">
-                                    <button className="btn col-12">Subscribe</button>
-                                </div>
-
+                            <div className="details ml-2" >
+                                <div style={{ fontSize: "14px", fontWeight: "bold"}} className="text-2">{this.video.snippet.title}</div>
+                                <p className="text-muted my-0" style={{ fontSize: "13px" }}>{this.video.snippet.channelTitle}</p>
+                                <p className="text-muted" style={{ fontSize: "13px"}}>14k watch &middot; 2 days ago</p>
                             </div>
                         </div>
-
-
+                        <div style={{display:"flex", }} className="col-12 mx-auto mx-auto mb-1">
+                            <div className="p-0 mb-2">
+                                <img width={"168px"} height={"94px"} src={this.video.snippet.thumbnails.medium.url}></img>
+    
+                            </div>
+                            <div className="details ml-2" >
+                                <div style={{ fontSize: "14px", fontWeight: "bold"}} className="text-2">{this.video.snippet.title}</div>
+                                <p className="text-muted my-0" style={{ fontSize: "13px" }}>{this.video.snippet.channelTitle}</p>
+                                <p className="text-muted" style={{ fontSize: "13px"}}>14k watch &middot; 2 days ago</p>
+                            </div>
+                        </div>
+                        <div style={{display:"flex", }} className="col-12 mx-auto mx-auto mb-1">
+                            <div className="p-0 mb-2">
+                                <img width={"168px"} height={"94px"} src={this.video.snippet.thumbnails.medium.url}></img>
+    
+                            </div>
+                            <div className="details ml-2" >
+                                <div style={{ fontSize: "14px", fontWeight: "bold"}} className="text-2">{this.video.snippet.title}</div>
+                                <p className="text-muted my-0" style={{ fontSize: "13px" }}>{this.video.snippet.channelTitle}</p>
+                                <p className="text-muted" style={{ fontSize: "13px"}}>14k watch &middot; 2 days ago</p>
+                            </div>
+                        </div>
+                        <div style={{display:"flex", }} className="col-12 mx-auto mx-auto mb-1">
+                            <div className="p-0 mb-2">
+                                <img width={"168px"} height={"94px"} src={this.video.snippet.thumbnails.medium.url}></img>
+    
+                            </div>
+                            <div className="details ml-2" >
+                                <div style={{ fontSize: "14px", fontWeight: "bold"}} className="text-2">{this.video.snippet.title}</div>
+                                <p className="text-muted my-0" style={{ fontSize: "13px" }}>{this.video.snippet.channelTitle}</p>
+                                <p className="text-muted" style={{ fontSize: "13px"}}>14k watch &middot; 2 days ago</p>
+                            </div>
+                        </div>
+                        <div style={{display:"flex", }} className="col-12 mx-auto mx-auto mb-1">
+                            <div className="p-0 mb-2">
+                                <img width={"168px"} height={"94px"} src={this.video.snippet.thumbnails.medium.url}></img>
+    
+                            </div>
+                            <div className="details ml-2" >
+                                <div style={{ fontSize: "14px", fontWeight: "bold"}} className="text-2">{this.video.snippet.title}</div>
+                                <p className="text-muted my-0" style={{ fontSize: "13px" }}>{this.video.snippet.channelTitle}</p>
+                                <p className="text-muted" style={{ fontSize: "13px"}}>14k watch &middot; 2 days ago</p>
+                            </div>
+                        </div>
                     </div>
-
+    
                 </div>
-
-                <div className="col-12 col-lg-4 mx-lg-0 row">
-                    <div className="col-12 mx-auto mx-auto mb-1 row">
-                        <div className="p-0 mb-2">
-                            <img width={"168px"} height={"94px"} src={video.snippet.thumbnails.medium.url}></img>
-
-                        </div>
-                        <div className="details ml-2">
-                            <h6 style={{ fontSize: "16px", fontWeight: "bold", maxWidth: "250px" }}>{video.snippet.title}</h6>
-                            <p className="text-muted my-0" style={{ fontSize: "14px" }}>{video.snippet.channelTitle}</p>
-                            <p className="text-muted" style={{ fontSize: "13px", fontWeight: "bold" }}>14k watch &middot; 2 days ago</p>
-                        </div>
-                    </div>
-                    <div className="col-12 mx-auto mx-auto mb-1 row">
-                        <div className="p-0 mb-2"><img width={"168px"} height={"94px"} src={video.snippet.thumbnails.medium.url}></img></div>
-                        <div className="details ml-2">
-                            <h6 style={{ fontSize: "16px", fontWeight: "bold", maxWidth: "250px" }}>{video.snippet.title}</h6>
-                            <p className="text-muted my-0" style={{ fontSize: "14px" }}>{video.snippet.channelTitle}</p>
-                            <p className="text-muted" style={{ fontSize: "13px", fontWeight: "bold" }}>14k watch &middot; 2 days ago</p>
-                        </div>
-                    </div>
-                    <div className="col-12 mx-auto mx-auto mb-1 row">
-                        <div className="p-0 mb-2"><img width={"168px"} height={"94px"} src={video.snippet.thumbnails.medium.url}></img></div>
-                        <div className="details ml-2">
-                            <h6 style={{ fontSize: "16px", fontWeight: "bold", maxWidth: "250px" }}>{video.snippet.title}</h6>
-                            <p className="text-muted my-0" style={{ fontSize: "14px" }}>{video.snippet.channelTitle}</p>
-                            <p className="text-muted" style={{ fontSize: "13px", fontWeight: "bold" }}>14k watch &middot; 2 days ago</p>
-                        </div>
-                    </div>
-                    <div className="col-12 mx-auto mx-auto mb-1 row">
-                        <div className="p-0 mb-2"><img width={"168px"} height={"94px"} src={video.snippet.thumbnails.medium.url}></img></div>
-                        <div className="details ml-2">
-                            <h6 style={{ fontSize: "16px", fontWeight: "bold", maxWidth: "250px" }}>{video.snippet.title}</h6>
-                            <p className="text-muted my-0" style={{ fontSize: "14px" }}>{video.snippet.channelTitle}</p>
-                            <p className="text-muted" style={{ fontSize: "13px", fontWeight: "bold" }}>14k watch &middot; 2 days ago</p>
-                        </div>
-                    </div>
-                    <div className="col-12 mx-auto mx-auto mb-1 row">
-                        <div className="p-0 mb-2"><img width={"168px"} height={"94px"} src={video.snippet.thumbnails.medium.url}></img></div>
-                        <div className="details ml-2">
-                            <h6 style={{ fontSize: "16px", fontWeight: "bold", maxWidth: "250px" }}>{video.snippet.title}</h6>
-                            <p className="text-muted my-0" style={{ fontSize: "14px" }}>{video.snippet.channelTitle}</p>
-                            <p className="text-muted" style={{ fontSize: "13px", fontWeight: "bold" }}>14k watch &middot; 2 days ago</p>
-                        </div>
-                    </div>
-                    <div className="col-12 mx-auto mx-auto mb-1 row">
-                        <div className="p-0 mb-2"><img width={"168px"} height={"94px"} src={video.snippet.thumbnails.medium.url}></img></div>
-                        <div className="details ml-2">
-                            <h6 style={{ fontSize: "16px", fontWeight: "bold", maxWidth: "250px" }}>{video.snippet.title}</h6>
-                            <p className="text-muted my-0" style={{ fontSize: "14px" }}>{video.snippet.channelTitle}</p>
-                            <p className="text-muted" style={{ fontSize: "13px", fontWeight: "bold" }}>14k watch &middot; 2 days ago</p>
-                        </div>
-                    </div>
-                </div>
-
             </div>
-        </div>
-    )
+        )
+    }
 }
 
 export default Watch;

@@ -12,8 +12,9 @@ const Header = () => {
          
         <div style={{width: "100%"}}>
         {/* <SideBar /> */}
-        <nav className="row mr-2 py-1 navbar navbar-white bg-white" style={{borderBottom: "2px solid #e5e5e5"}}>
-            
+        
+        <nav className="row mr-2 py-1 navbar navbar-white bg-white fixed-top">
+            <button className="btn btn-lg mx-3 circle"><i className="fa-solid fa-bars"></i></button>
             <a className={`navbar-brand ${isActive ? "d-none" : ""}`} href="/"><img alt="logo" src="logo.png" height={"42px"}></img></a>
             
             <SearchBar collapse={setIsActive}/>
@@ -22,6 +23,7 @@ const Header = () => {
             
             <AuthGoogle />
         </nav>
+        
         </div>
     )
 }

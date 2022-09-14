@@ -31,8 +31,9 @@ class AuthGoogle extends React.Component{
     }
 
     state={isClicked: false};
-
+    
     renderAuthButton(){
+        console.log(this.props.user.pp);
         if(this.props.isSignedIn){
             // return <button onClick={()=>this.auth.signOut()} className="btn btn-primary mr-2" style={{fonSize: "small"}}>{this.props.user.name+" "+this.props.user.surname}</button>
             return(

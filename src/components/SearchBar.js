@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {  videos } from "../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
-import { youtube } from "../api/youtubeAPI";
+import { youtubeSearch } from "../api/youtubeAPI";
 
 
 
@@ -10,11 +10,9 @@ const SearchBar = ({ collapse }) => {
     const [width, setWidth] = useState(window.innerWidth);
     const [isActive, setIsActive] = useState(false);
     const dispatch = useDispatch();
-    const videoss=useSelector(state=>state.videos);
-    const list=useSelector(state=>state.videos.videoList);
 
     const search = async (term, maxResults) => {
-        const response = await youtube(maxResults).get('/search', {
+        const response = await youtubeSearch(maxResults).get('/search', {
             params: {
                 q: term
             }
@@ -22,11 +20,11 @@ const SearchBar = ({ collapse }) => {
         dispatch(videos(response.data.items));
     };
 
-    // useEffect(() => {
-    //     search("",4);
-    // },[]);
+    useEffect(() => {
+        search("",4);
+    },[]);
 
-    const handleResize = () => {
+    function handleResize() {
         setWidth(window.innerWidth);
     }
 

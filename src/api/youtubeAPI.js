@@ -1,16 +1,25 @@
 import axios from "axios";
-// const KEY='AIzaSyAjZ8cuZSCIKKVNC-Ygfsq0fc7Q14CC0SQ';
+const KEY='AIzaSyAjZ8cuZSCIKKVNC-Ygfsq0fc7Q14CC0SQ';
 // const KEY='AIzaSyBWbte8RCoVP73zo0sFgXSuphtZmLLBbq4'
 // const KEY='AIzaSyCwyt1FcKwW_IwVouO38gRCoFhIiqy7Pq8';
-const KEY='AIzaSyDme7jfUBKicAWjeQKPQJWtbSpfnqvRcqg';
+// const KEY='AIzaSyDme7jfUBKicAWjeQKPQJWtbSpfnqvRcqg';
 
-export const youtube=(maxResults, related=null)=> axios.create({
+export const youtubeSearch=(maxResults, related=null)=> axios.create({
     baseURL: 'https://www.googleapis.com/youtube/v3',
     params:{
         part:  "snippet",
         key: KEY,
         maxResults: maxResults,
         relatedToVideoId: related
+    }
+    
+});
+
+export const youtubeVideo=(part)=> axios.create({
+    baseURL: 'https://www.googleapis.com/youtube/v3',
+    params:{
+        part:  part,
+        key: KEY,
     }
 });
 

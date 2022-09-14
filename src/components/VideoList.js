@@ -284,7 +284,7 @@ const VideoList=({type})=>{
     const list=videos.map((video)=>{
         return <VideoItem video={video} type={type} />
     });
-    console.log(videos);
+    // console.log(videos);
     return <div className="row m-4 no-gutters">{list}</div>;
 }
 
